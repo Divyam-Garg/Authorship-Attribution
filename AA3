@@ -1,0 +1,61 @@
+# import pre-implemented versions of Q3 and Q4 functions
+from hidden_lib import authattr_worddict, authattr_oop
+
+def authattr_authorpred(authordict, unknown, maxrank):
+    '''Takes in 3 arguments - 
+    authordict: a dictionary of authors as keys(str), associated 
+    with a non-empty list of documents(str)
+    unknown: a str contained the document of unknown origin
+    maxrank: the positive int value to set maxrank to in the call to 
+    authattr_oop 
+    
+    Returns  a list of (author, oop) tuples arranged in ascending order 
+    according to their oop distances, where author is the name of an 
+    author from authordict, and oop is the out-of-place distance between 
+    unknown and the combined works of author, in the form of a float.
+    '''
+    
+    #Computing a dict with names of authors as keys and a dictionary of word 
+    #frequencies in their respective documents as values
+    author_individual_dict = {}
+    for key, value in authordict.items():
+        whole_text = ''
+        for i in value:
+            whole_text += ' ' + i
+    
+        
+        author_individual_dict[key] = authattr_worddict(whole_text)
+    
+    #Storing the word frequency dict for the document unknown to use in 
+    #authattr_oop function call
+    unknown_freq_dict = authattr_worddict(unknown)
+    
+    #Computing the oop distances for all the authors and putting them in a 
+    #list with tuples of the form (author name, oop distances)
+    ooplist = []
+    for key, value in author_individual_dict.items():
+        ooplist.append((authattr_oop(value, unknown_freq_dict, maxrank), key))
+        
+    ooplist = sorted(ooplist)
+    
+    final_list = []
+    for oop, key in ooplist:
+        final_list.append((key, oop))
+        
+    return final_list
+        
+    
+    
+        
+        
+        
+    
+    
+        
+            
+            
+        
+    
+        
+    
+
