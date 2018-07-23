@@ -1,0 +1,39 @@
+from collections import defaultdict
+
+def authattr_worddict(doc):
+    """calculate a dictionary of word frequencies in `doc`, where a "word" is
+    defined to be a sequence of alphabetic characters. Non-alphabetic characters
+    are considered to be standalone words in the case that they are not surrounded by
+    alphabetic characters on either side."""
+    
+    words = defaultdict(int)
+
+    # iterate over the whitespace-delimited tokens, and separate each out into
+    # "words"
+    for word in doc.split():
+
+        # CASE 1: all-alphabetic, in which case simply increment freq
+        if word.isalpha():
+            words[word] += 1
+
+        # CASE 2: not all-alphabetic, in which case potentially need to
+        # separate out into component words
+        else:
+
+            # iterate over `word`, and for any standalone non-alpha characters
+            # split out into single word
+            sub_word = ''
+            for i in range(len(word)):
+                char = word[i]
+                if char.isalpha() or (len(word[i-1:i+2]) == 3 and 
+                                      word[i-1].isalpha() and word[i+1].isalpha()):
+                    sub_word += char
+                else:
+                    if sub_word:
+                        words[sub_word] += 1
+                        sub_word = ''
+                    words[char] += 1
+            if sub_word:
+                words[sub_word] += 1
+                
+    return dict(words)
