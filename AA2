@@ -1,0 +1,46 @@
+from collections import defaultdict
+
+def dictrank(dictfreq):
+    """Translate a word frequency dictionary into a dictionary of
+    ranking values"""
+
+    rankvals = defaultdict(int)
+
+    # calculate how many times each freq value occurs
+    for key in dictfreq:
+        rankvals[dictfreq[key]] += 1
+
+    # iterate through the frequencies, and translate each `rankval`
+    # count of the number of words with that freq, into a
+    # ranking value based on the current rank and the number
+    # of words with that freq (from `rankvals`)
+    rank = 1
+    for value in sorted(rankvals, reverse=True):
+        freq = rankvals[value]
+        rankvals[value] = rank + (freq - 1)/2
+        rank += freq
+
+    # use `rankval` to translate frequencies into ranking values
+    rankout = defaultdict(int)
+    for word in dictfreq:
+        rankout[word] = rankvals[dictfreq[word]]
+
+    return rankout
+
+def authattr_oop(dictfreq1, dictfreq2, maxrank):
+    """Calculate the out-of-place distance between two word frequency 
+    dictionaries `dictfreq1` and `dictfreq2`"""
+    
+    # translate the two dictfreq inputs into dictionaries of rank values
+    dictrank1 = dictrank(dictfreq1)
+    dictrank2 = dictrank(dictfreq2)
+
+    # iterate over the words, and calcualte the sum of abs difference in
+    # rank values
+    oop = 0.0
+    for word in set(dictrank1).union(set(dictrank2)):
+        rank1 = dictrank1[word] or maxrank
+        rank2 = dictrank2[word] or maxrank
+        oop += abs(rank1 - rank2)
+
+    return oop
