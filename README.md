@@ -9,6 +9,7 @@ We will also do something slightly unconventional in considering each "standalon
 Write a function authattr_worddict(doc) that takes a single string argument doc and returns a dictionary (dict) of words contained in doc (as defined above), with the frequency of each word as an int. Note that, as the output is a dict, the order of those words may not correspond exactly to that indicated below, and that the testing will accept any word ordering within the dictionary.
 
 AA2
+
 The next step in our authorship attribution system will be to take two dictionaries of word counts and count the similarity between them. We will do this by:
 
 1. ranking the two sets of words in descending order of frequency, and;
